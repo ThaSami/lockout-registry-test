@@ -7,3 +7,4 @@ lockout:
   
 whitelist:
  - auth
+ - lockall
