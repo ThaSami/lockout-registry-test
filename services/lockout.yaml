@@ -1,4 +1,4 @@
-lockall: false
+lockall: true
 
 lockout:
   - iris
@@ -6,3 +6,4 @@ lockout:
 
 whitelist:
  - auth
+ - test
