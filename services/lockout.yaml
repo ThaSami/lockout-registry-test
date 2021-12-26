@@ -1,0 +1,8 @@
+lockall: false
+
+lockout:
+  - iris
+  - auth
+
+whitelist:
+ - auth
