@@ -3,7 +3,7 @@ lockall: true
 lockout:
   - iris
   - auth
-
+  - transporter
 whitelist:
  - auth
  - test
