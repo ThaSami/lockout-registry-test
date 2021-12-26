@@ -1,4 +1,4 @@
-lockall: false
+lockall: true
 
 lockout:
   - auth
@@ -6,4 +6,5 @@ lockout:
   - transporter
   
 whitelist:
- - test
+ - auth
+ - lockall
