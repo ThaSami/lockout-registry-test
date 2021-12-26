@@ -1,9 +1,9 @@
-lockall: true
+lockall: false
 
 lockout:
-  - iris
   - auth
+  - iris
   - transporter
+  
 whitelist:
- - auth
  - test
