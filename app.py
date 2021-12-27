@@ -12,7 +12,7 @@ app = Flask(__name__)
 metrics = GunicornPrometheusMetrics(app)
 
 
-def update_data(lockout_config_path):
+def update_data():
     pull_new_data()
     global data
     data = update_dictionary(lockout_config_path)
@@ -21,13 +21,13 @@ def update_data(lockout_config_path):
 @app.route("/hook", methods=["POST"])
 def hook_root():
     if request.headers["content-type"] == "application/json":
-        data = json.loads(request.data)
+        req_data = json.loads(request.data)
 
-        if toolz.get_in(["ref"], data, None) == "refs/heads/main":
+        if toolz.get_in(["ref"], req_data, None) == "refs/heads/main":
             update_data()
             return "Handled"
 
-        if check_merged("main", data):
+        if check_merged("main", req_data):
             update_data()
             return "Handled"
 
@@ -60,8 +60,9 @@ def islocked():
 if __name__ == "__main__":
 
     port = os.getenv('API_PORT',5000)
+    global lockout_config_path
     lockout_config_path = os.getenv('LOCKOUT_CONFIG_PATH', 'services/lockout.yaml')
-    update_data(lockout_config_path)
+    update_data()
 
     
     app.run(host='0.0.0.0', port=port, debug=False,threaded=True)
