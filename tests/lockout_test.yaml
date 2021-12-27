@@ -1,0 +1,10 @@
+lockall: false
+
+lockout:
+  - auth
+  - iris
+  - transporter
+  
+whitelist:
+ - auth
+ - lockall

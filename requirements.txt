@@ -5,3 +5,9 @@ prometheus_flask_exporter
 gitpython==3.1.24
 toolz==0.11.2
 pyyaml==6.0
+pytest==6.2.5
+pytest-env==0.6.2
+pytest-flask
+pytest-cov
+pylint-flask
+pylint
