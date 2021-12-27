@@ -57,12 +57,14 @@ def islocked():
 
     return 400, "Bad Request"
 
-if __name__ == "__main__":
-
-    port = os.getenv('API_PORT',5000)
+@app.before_first_request
+def setup():
     global lockout_config_path
     lockout_config_path = os.getenv('LOCKOUT_CONFIG_PATH', 'services/lockout.yaml')
     update_data()
 
-    
+
+
+if __name__ == "__main__":
+    port = os.getenv('API_PORT',5000)
     app.run(host='0.0.0.0', port=port, debug=False,threaded=True)
