@@ -7,32 +7,42 @@ import toolz
 from helpers.helper import *
 from prometheus_flask_exporter.multiprocess import GunicornPrometheusMetrics
 import os 
+import logging
+
+logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 
 app = Flask(__name__)
 metrics = GunicornPrometheusMetrics(app)
 
 
 def update_data():
+    logging.info('Updating Repo')
     pull_new_data()
+    logging.info('Repo Updated')
     global data
     data = update_dictionary(lockout_config_path)
+    logging.info('Data Updated')
+
 
 
 @app.route("/hook", methods=["POST"])
 def hook_root():
+    logging.info('Received Hook')
     if request.headers["content-type"] == "application/json":
         req_data = json.loads(request.data)
 
         if toolz.get_in(["ref"], req_data, None) == "refs/heads/main":
+            logging.info('Hook Triggered on main push')
             update_data()
             return "Handled"
 
         if check_merged("main", req_data):
+            logging.info('Hook Triggered on merge')
             update_data()
             return "Handled"
 
         else:
-            print("unknown event")
+            logging.info("unknown event")
             return "500"
 
 @app.route("/islocked", methods=["POST"])
@@ -42,6 +52,7 @@ def islocked():
     
         service = toolz.get_in(["service"], req_data, None)
         if service is None:
+            logging.error('Unknown request', req_data)
             return "400", "Bad Request"        
 
         lock_all = toolz.get_in(["lockall"], data, None)
@@ -49,12 +60,17 @@ def islocked():
         lockout = toolz.get_in(["lockout"], data, None)
 
         if service in whitelisted:
+            logging.info('Service %s is whitelisted', service)
             return "Not Locked"
+
         elif service in lockout or lock_all:
+            logging.info('Service %s is locked', service)
             return "Locked"
-        
+
+        logging.info('Service %s is not locked', service)    
         return "Not Locked"
 
+    logging.error('Unknown request', request.data)
     return 400, "Bad Request"
 
 @app.before_first_request
