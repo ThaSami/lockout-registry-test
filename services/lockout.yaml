@@ -1,4 +1,4 @@
-lockall: TRUE
+lockall: false
 
 lockout:
   - auth
