@@ -8,4 +8,4 @@ git pull --all
 git checkout ${BRANCH_NAME}
 git pull --all
 
-gunicorn -c config.py app:app -w ${WORKERS} -b 0.0.0.0:${PORT}
+cd api && gunicorn -c config.py app:app -w ${WORKERS} -b 0.0.0.0:${PORT}
