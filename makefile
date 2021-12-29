@@ -14,8 +14,8 @@ test:
 install:
 	pip3 install -r requirements.txt 
 
-start-api:
+start-api: install
 	#sets PYTHONPATH to directory above, would do differently in production
-	cd api && PYTHONPATH=".." python3 app.py
+	cd api && METRICS_PORT=9200 gunicorn -c config.py app:app -w 1 -b 0.0.0.0:8080
 
 all: install lint test
