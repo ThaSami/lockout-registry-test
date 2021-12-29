@@ -20,11 +20,7 @@ RUN apk update \
 
 RUN chmod +x ./entry.sh
 ENV METRICS_PORT 9200
-ENV PROMETHEUS_MULTIPROC_DIR /tmp
 ENV prometheus_multiproc_dir /tmp
-ENV API_PORT 5000
 ENV LOCKOUT_CONFIG_PATH ../services/lockout.yaml
-EXPOSE 5000
-EXPOSE 9200
 
-ENTRYPOINT ["./entry.sh"]
+CMD ["./entry.sh"]

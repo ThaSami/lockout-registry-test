@@ -28,11 +28,11 @@ def format_service_dictionary(dictionary):
     }
 
 
-def pull_new_data():
+def pull_new_data(branch_name):
     repo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 
     repo = git.Repo(repo_path)
-    repo.remotes.origin.pull("main")
+    repo.remotes.origin.pull(branch_name)
 
 
 def update_dictionary(filepath):
