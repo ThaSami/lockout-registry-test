@@ -5,7 +5,7 @@ ARG RUNTIME_DEPS="libcrypto1.1 libssl1.1 libxml2-dev libxslt-dev curl jq ca-cert
 RUN apk add --no-cache git
 
 RUN git config --global core.autocrlf false
-ARG CACHE_BUST=4
+ARG CACHE_BUST=8
 RUN git clone https://github.com/ThaSami/lockout-registry-test.git
 WORKDIR /lockout-registry-test/api
 RUN apk update \
@@ -20,11 +20,8 @@ RUN apk update \
 
 RUN chmod +x ./entry.sh
 ENV METRICS_PORT 9200
-ENV PROMETHEUS_MULTIPROC_DIR /tmp
 ENV prometheus_multiproc_dir /tmp
-ENV API_PORT 5000
 ENV LOCKOUT_CONFIG_PATH ../services/lockout.yaml
-EXPOSE 5000
-EXPOSE 9200
+
 
 ENTRYPOINT ["./entry.sh"]
