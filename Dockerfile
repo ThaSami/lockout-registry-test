@@ -7,7 +7,7 @@ RUN apk add --no-cache git
 RUN git config --global core.autocrlf false
 ARG CACHE_BUST=8
 RUN git clone https://github.com/ThaSami/lockout-registry-test.git
-WORKDIR /lockout-registry-test/api
+WORKDIR /lockout-registry-test/
 RUN apk update \
  && apk add --no-cache --virtual .build-deps ${BUILD_DEPS} \
  && apk add --no-cache ${RUNTIME_DEPS} \
@@ -18,6 +18,7 @@ RUN apk update \
         -o \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
         -exec rm -rf '{}' \+
 
+WORKDIR /lockout-registry-test/api
 RUN chmod +x ./entry.sh
 ENV METRICS_PORT 9200
 ENV prometheus_multiproc_dir /tmp
