@@ -14,7 +14,7 @@ metrics = GunicornPrometheusMetrics(app)
 
 def update_data():
     logging.info("Updating Repo")
-    pull_new_data()
+    pull_new_data(branch_name)
     logging.info("Repo Updated")
     global data
     data = update_dictionary(lockout_config_path)
@@ -70,11 +70,14 @@ def islocked():
     logging.error("Invalid Request", request.data)
     return 400, "Bad Request"
 
+## implement LRU Cache 
 
 @app.before_first_request
 def setup():
     global lockout_config_path
     lockout_config_path = os.getenv("LOCKOUT_CONFIG_PATH", "../services/lockout.yaml")
+    global branch_name
+    branch_name = os.getenv("BRANCH_NAME", "main")
     update_data()
 
 
