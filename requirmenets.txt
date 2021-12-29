@@ -1,7 +1,0 @@
-flask==1.1.2
-gunicorn==20.0.4
-prometheus_client
-prometheus_flask_exporter
-gitpython==3.1.24
-toolz==0.11.2
-pyyaml==6.0
