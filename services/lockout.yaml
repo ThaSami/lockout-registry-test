@@ -1,10 +1,13 @@
-lockall: true
+## if lockall is true then any service NOT whitelisted will be Locked.
+## if you want to granuarly lock a service add it in "lockout" list
+## Services in "Whitelist" section will always be whitelisted regardless of other sections values.
+
+lockall: false
 
 lockout:
   - auth
   - iris
   - transporter
-  - test
   
 whitelist:
  - auth
