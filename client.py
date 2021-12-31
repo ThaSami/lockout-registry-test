@@ -2,9 +2,12 @@ import requests
 import argparse
 import sys
 
-def islocked(url,service):
+
+def islocked(url, service):
     data = {"service": service}
     response = requests.post(url, json=data)
+    print(response)
+
     return response.text.lower() == "locked"
 
 
@@ -16,11 +19,10 @@ def read_config():
     return args
 
 
-
-if __name__=="__main__":
+if __name__ == "__main__":
     args = read_config()
     url = args.url
     service = args.servicename
-    if islocked(url,service):
+    if islocked(url, service):
         print("Service Is Locked")
         sys.exit(1)

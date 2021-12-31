@@ -2,7 +2,12 @@ import toolz
 import yaml
 import git
 import os
+from functools import _lru_cache_wrapper, lru_cache
 
+from functools import lru_cache, wraps
+from datetime import datetime, timedelta
+
+import os
 
 def check_merged(basebranch, data):
     return (
@@ -12,12 +17,11 @@ def check_merged(basebranch, data):
     )
 
 
-def read_yaml(filepath):
-    with open(filepath, "r") as stream:
-        try:
-            return yaml.safe_load(stream)
-        except yaml.YAMLError as exc:
-            print(exc)
+def read_yaml(yamldata):
+    try:
+        return yaml.safe_load(yamldata)
+    except yaml.YAMLError as exc:
+        print(exc)
 
 
 def format_service_dictionary(dictionary):
@@ -27,13 +31,23 @@ def format_service_dictionary(dictionary):
         "whitelist": set(dictionary["whitelist"]),
     }
 
+def parse_data(yamldata):
+    return format_service_dictionary(read_yaml(yamldata))
 
-def pull_new_data(branch_name):
-    repo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+def timed_lru_cache(seconds: int, maxsize: int = 128):
+    def wrapper_cache(func):
+        func = lru_cache(maxsize=maxsize)(func)
+        func.lifetime = timedelta(seconds=seconds)
+        func.expiration = datetime.utcnow() + func.lifetime
 
-    repo = git.Repo(repo_path)
-    repo.remotes.origin.pull(branch_name)
+        @wraps(func)
+        def wrapped_func(*args, **kwargs):
+            if datetime.utcnow() >= func.expiration:
+                func.cache_clear()
+                func.expiration = datetime.utcnow() + func.lifetime
 
+            return func(*args, **kwargs)
 
-def update_dictionary(filepath):
-    return format_service_dictionary(read_yaml(filepath))
+        return wrapped_func
+
+    return wrapper_cache

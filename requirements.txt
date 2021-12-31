@@ -7,6 +7,7 @@ toolz==0.11.2
 pyyaml==6.0
 pytest==6.2.5
 pytest-env==0.6.2
+requests==2.26.0
 pytest-flask
 pytest-cov
 pylint-flask
