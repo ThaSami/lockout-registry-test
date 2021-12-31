@@ -2,7 +2,7 @@
 ## if you want to granuarly lock a service add it in "lockout" list
 ## Services in "Whitelist" section will always be whitelisted regardless of other sections values.
 
-lockall: false
+lockall: true
 
 lockout:
   - auth
