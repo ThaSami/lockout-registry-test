@@ -18,3 +18,5 @@ start-api: install
 	@cd api; METRICS_PORT=9200 gunicorn -c config.py app:app -w 2 -b 0.0.0.0:8080
 
 all: install lint test
+
+#TEST
