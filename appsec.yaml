@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: .
-    destination: /home/ssm-user
+    destination: /home/ssm-user/lockout-registry-test
 
 hooks:
   ApplicationStop:
