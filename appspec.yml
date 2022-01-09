@@ -3,6 +3,8 @@ os: linux
 files:
   - source: .
     destination: /home/ssm-user/lockout-registry-test
+    file_exists_behavior: OVERWRITE
+
 
 hooks:
   ApplicationStop:
