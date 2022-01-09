@@ -30,4 +30,5 @@ jobs:
           --application-name test-nginx \
           --deployment-group-name nginx-kibana \
           --deployment-config-name CodeDeployDefault.OneAtATime \
+          --file-exists-behavior OVERWRITE \
           --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
